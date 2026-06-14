@@ -12,5 +12,6 @@ namespace ClubLecturaAPI.Data
 
         public DbSet<Libro> Libros { get; set; }
         public DbSet<Miembro> Miembros { get; set; }
+        public DbSet<Reunion> Reuniones { get; set; }
     }
 }
