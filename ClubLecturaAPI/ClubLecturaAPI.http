@@ -1,0 +1,6 @@
+@ClubLecturaAPI_HostAddress = http://localhost:5167
+
+GET {{ClubLecturaAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
