@@ -17,7 +17,7 @@ namespace ClubLecturaAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Reuniones
+   
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReunionDto>>> GetReuniones()
         {
@@ -36,7 +36,7 @@ namespace ClubLecturaAPI.Controllers
             return Ok(reuniones);
         }
 
-        // GET: api/Reuniones/5
+ 
         [HttpGet("{id}")]
         public async Task<ActionResult<ReunionDto>> GetReunion(int id)
         {
@@ -62,11 +62,11 @@ namespace ClubLecturaAPI.Controllers
             return Ok(reunionDto);
         }
 
-        // POST: api/Reuniones
+ 
         [HttpPost]
         public async Task<ActionResult<ReunionDto>> CrearReunion(CrearReunionDto crearReunionDto)
         {
-            // Validar que el libro exista
+      
             var libro = await _context.Libros.FindAsync(crearReunionDto.LibroId);
             if (libro == null)
             {
@@ -97,7 +97,7 @@ namespace ClubLecturaAPI.Controllers
             return CreatedAtAction(nameof(GetReunion), new { id = reunion.Id }, reunionDto);
         }
 
-        // PUT: api/Reuniones/5
+
         [HttpPut("{id}")]
         public async Task<IActionResult> ActualizarReunion(int id, ActualizarReunionDto actualizarReunionDto)
         {
@@ -108,7 +108,7 @@ namespace ClubLecturaAPI.Controllers
                 return NotFound();
             }
 
-            // Validar que el libro exista
+
             var libro = await _context.Libros.FindAsync(actualizarReunionDto.LibroId);
             if (libro == null)
             {
@@ -125,7 +125,7 @@ namespace ClubLecturaAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Reuniones/5
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> EliminarReunion(int id)
         {
