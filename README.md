@@ -1,7 +1,6 @@
 # ClubLecturaAPI — Gestor de Club de Lectura
 
 API REST para la gestión de un club de lectura: organización de libros, miembros, reuniones y comentarios. Permite administrar las lecturas, la asistencia y las valoraciones del club.
-Proyecto de la asignatura Programación II — ITLA, 5to Cuatrimestre (Práctica 2).
 
 Pasos
 1. Clonar el repositorio:
@@ -33,6 +32,3 @@ Se configura en `ClubLecturaAPI/appsettings.json`:
 }
 ```
 
-Autor
-
-Anthony Jerez — ITLA, Programación II.
