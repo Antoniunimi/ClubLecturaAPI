@@ -1,8 +1,6 @@
-using ClubLecturaAPI.Data;
-using ClubLecturaAPI.DTOs;
-using ClubLecturaAPI.Models;
+using ClubLectura.Infrastructure.Models;
+using ClubLectura.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClubLecturaAPI.Controllers
 {
@@ -10,115 +8,54 @@ namespace ClubLecturaAPI.Controllers
     [Route("api/[controller]")]
     public class MiembrosController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly MiembroRepository _repository;
 
-        public MiembrosController(ApplicationDbContext context)
+        public MiembrosController(MiembroRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
+        // GET: api/Miembros
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MiembroDto>>> GetMiembros()
+        public async Task<ActionResult<List<MiembroModel>>> GetMiembros()
         {
-            var miembros = await _context.Miembros
-                .Select(m => new MiembroDto
-                {
-                    Id = m.Id,
-                    Nombre = m.Nombre,
-                    Correo = m.Correo,
-                    Telefono = m.Telefono,
-                    FechaIngreso = m.FechaIngreso
-                })
-                .ToListAsync();
-
-            return Ok(miembros);
+            return Ok(await _repository.GetMiembros());
         }
 
-
+        // GET: api/Miembros/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<MiembroDto>> GetMiembro(int id)
+        public async Task<ActionResult<MiembroModel>> GetMiembro(int id)
         {
-            var miembro = await _context.Miembros.FindAsync(id);
-
-            if (miembro == null)
+            var miembro = await _repository.GetMiembro(id);
+            if (miembro is null)
             {
                 return NotFound();
             }
-
-            var miembroDto = new MiembroDto
-            {
-                Id = miembro.Id,
-                Nombre = miembro.Nombre,
-                Correo = miembro.Correo,
-                Telefono = miembro.Telefono,
-                FechaIngreso = miembro.FechaIngreso
-            };
-
-            return Ok(miembroDto);
+            return Ok(miembro);
         }
 
-     
+        // POST: api/Miembros
         [HttpPost]
-        public async Task<ActionResult<MiembroDto>> CrearMiembro(CrearMiembroDto crearMiembroDto)
+        public async Task<IActionResult> CrearMiembro(MiembroModel model)
         {
-            var miembro = new Miembro
-            {
-                Nombre = crearMiembroDto.Nombre,
-                Correo = crearMiembroDto.Correo,
-                Telefono = crearMiembroDto.Telefono,
-                FechaIngreso = crearMiembroDto.FechaIngreso
-            };
-
-            _context.Miembros.Add(miembro);
-            await _context.SaveChangesAsync();
-
-            var miembroDto = new MiembroDto
-            {
-                Id = miembro.Id,
-                Nombre = miembro.Nombre,
-                Correo = miembro.Correo,
-                Telefono = miembro.Telefono,
-                FechaIngreso = miembro.FechaIngreso
-            };
-
-            return CreatedAtAction(nameof(GetMiembro), new { id = miembro.Id }, miembroDto);
+            await _repository.SaveMiembro(model);
+            return Ok();
         }
 
-      
+        // PUT: api/Miembros/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> ActualizarMiembro(int id, ActualizarMiembroDto actualizarMiembroDto)
+        public async Task<IActionResult> ActualizarMiembro(int id, MiembroModel model)
         {
-            var miembro = await _context.Miembros.FindAsync(id);
-
-            if (miembro == null)
-            {
-                return NotFound();
-            }
-
-            miembro.Nombre = actualizarMiembroDto.Nombre;
-            miembro.Correo = actualizarMiembroDto.Correo;
-            miembro.Telefono = actualizarMiembroDto.Telefono;
-            miembro.FechaIngreso = actualizarMiembroDto.FechaIngreso;
-
-            await _context.SaveChangesAsync();
-
+            model.Id = id;
+            await _repository.UpdateMiembro(model);
             return NoContent();
         }
 
-        
+        // DELETE: api/Miembros/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> EliminarMiembro(int id)
         {
-            var miembro = await _context.Miembros.FindAsync(id);
-
-            if (miembro == null)
-            {
-                return NotFound();
-            }
-
-            _context.Miembros.Remove(miembro);
-            await _context.SaveChangesAsync();
-
+            await _repository.RemoveMiembro(id);
             return NoContent();
         }
     }

@@ -1,11 +1,11 @@
-using ClubLecturaAPI.Models;
+using ClubLectura.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace ClubLecturaAPI.Data
+namespace ClubLectura.Infrastructure.Context
 {
-    public class ApplicationDbContext : DbContext
+    public class ClubLecturaContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ClubLecturaContext(DbContextOptions<ClubLecturaContext> options)
             : base(options)
         {
         }

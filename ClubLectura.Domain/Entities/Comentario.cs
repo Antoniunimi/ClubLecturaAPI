@@ -1,22 +1,19 @@
-using System.ComponentModel.DataAnnotations;
+using ClubLectura.Domain.Core;
 
-namespace ClubLecturaAPI.DTOs
+namespace ClubLectura.Domain.Entities
 {
-    public class CrearComentarioDto
+    public class Comentario : BaseEntity
     {
-        [Required]
-        [MaxLength(500)]
         public string Texto { get; set; } = string.Empty;
-
-        [Range(1, 5)]
         public int Calificacion { get; set; }
-
         public DateTime FechaComentario { get; set; }
 
-        [Required]
-        public int MiembroId { get; set; }
 
-        [Required]
+        public int MiembroId { get; set; }
+        public Miembro? Miembro { get; set; }
+
+
         public int LibroId { get; set; }
+        public Libro? Libro { get; set; }
     }
 }

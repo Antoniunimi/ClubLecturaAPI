@@ -1,6 +1,6 @@
-namespace ClubLecturaAPI.DTOs
+namespace ClubLectura.Infrastructure.Models
 {
-    public class MiembroDto
+    public class MiembroModel
     {
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
