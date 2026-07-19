@@ -1,8 +1,6 @@
-using ClubLecturaAPI.Data;
-using ClubLecturaAPI.DTOs;
-using ClubLecturaAPI.Models;
+using ClubLectura.Infrastructure.Models;
+using ClubLectura.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClubLecturaAPI.Controllers
 {
@@ -10,120 +8,54 @@ namespace ClubLecturaAPI.Controllers
     [Route("api/[controller]")]
     public class LibrosController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly LibroRepository _repository;
 
-        public LibrosController(ApplicationDbContext context)
+        public LibrosController(LibroRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
-   
+        // GET: api/Libros
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LibroDto>>> GetLibros()
+        public async Task<ActionResult<List<LibroModel>>> GetLibros()
         {
-            var libros = await _context.Libros
-                .Select(l => new LibroDto
-                {
-                    Id = l.Id,
-                    Titulo = l.Titulo,
-                    Autor = l.Autor,
-                    ISBN = l.ISBN,
-                    AnioPublicacion = l.AnioPublicacion,
-                    Genero = l.Genero
-                })
-                .ToListAsync();
-
-            return Ok(libros);
+            return Ok(await _repository.GetLibros());
         }
 
-
+        // GET: api/Libros/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LibroDto>> GetLibro(int id)
+        public async Task<ActionResult<LibroModel>> GetLibro(int id)
         {
-            var libro = await _context.Libros.FindAsync(id);
-
-            if (libro == null)
+            var libro = await _repository.GetLibro(id);
+            if (libro is null)
             {
                 return NotFound();
             }
-
-            var libroDto = new LibroDto
-            {
-                Id = libro.Id,
-                Titulo = libro.Titulo,
-                Autor = libro.Autor,
-                ISBN = libro.ISBN,
-                AnioPublicacion = libro.AnioPublicacion,
-                Genero = libro.Genero
-            };
-
-            return Ok(libroDto);
+            return Ok(libro);
         }
 
+        // POST: api/Libros
         [HttpPost]
-        public async Task<ActionResult<LibroDto>> CrearLibro(CrearLibroDto crearLibroDto)
+        public async Task<IActionResult> CrearLibro(LibroModel model)
         {
-            var libro = new Libro
-            {
-                Titulo = crearLibroDto.Titulo,
-                Autor = crearLibroDto.Autor,
-                ISBN = crearLibroDto.ISBN,
-                AnioPublicacion = crearLibroDto.AnioPublicacion,
-                Genero = crearLibroDto.Genero
-            };
-
-            _context.Libros.Add(libro);
-            await _context.SaveChangesAsync();
-
-            var libroDto = new LibroDto
-            {
-                Id = libro.Id,
-                Titulo = libro.Titulo,
-                Autor = libro.Autor,
-                ISBN = libro.ISBN,
-                AnioPublicacion = libro.AnioPublicacion,
-                Genero = libro.Genero
-            };
-
-            return CreatedAtAction(nameof(GetLibro), new { id = libro.Id }, libroDto);
+            await _repository.SaveLibro(model);
+            return Ok();
         }
 
-    
+        // PUT: api/Libros/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> ActualizarLibro(int id, ActualizarLibroDto actualizarLibroDto)
+        public async Task<IActionResult> ActualizarLibro(int id, LibroModel model)
         {
-            var libro = await _context.Libros.FindAsync(id);
-
-            if (libro == null)
-            {
-                return NotFound();
-            }
-
-            libro.Titulo = actualizarLibroDto.Titulo;
-            libro.Autor = actualizarLibroDto.Autor;
-            libro.ISBN = actualizarLibroDto.ISBN;
-            libro.AnioPublicacion = actualizarLibroDto.AnioPublicacion;
-            libro.Genero = actualizarLibroDto.Genero;
-
-            await _context.SaveChangesAsync();
-
+            model.Id = id;
+            await _repository.UpdateLibro(model);
             return NoContent();
         }
 
- 
+        // DELETE: api/Libros/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> EliminarLibro(int id)
         {
-            var libro = await _context.Libros.FindAsync(id);
-
-            if (libro == null)
-            {
-                return NotFound();
-            }
-
-            _context.Libros.Remove(libro);
-            await _context.SaveChangesAsync();
-
+            await _repository.RemoveLibro(id);
             return NoContent();
         }
     }
