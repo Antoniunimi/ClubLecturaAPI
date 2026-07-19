@@ -4,7 +4,7 @@ using ClubLecturaAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace ClubLecturaAPI.Controllers
+namespace ClubLecturaAPI
 {
     [ApiController]
     [Route("api/[controller]")]
