@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="ClubLectura.Application/ClubLectura.Application.csproj" />
+  <Project Path="ClubLectura.Domain/ClubLectura.Domain.csproj" />
+  <Project Path="ClubLectura.Infrastructure/ClubLectura.Infrastructure.csproj" />
   <Project Path="ClubLecturaAPI/ClubLecturaAPI.csproj" />
 </Solution>
