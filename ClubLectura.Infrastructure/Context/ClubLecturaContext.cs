@@ -14,5 +14,7 @@ namespace ClubLectura.Infrastructure.Context
         public DbSet<Miembro> Miembros { get; set; }
         public DbSet<Reunion> Reuniones { get; set; }
         public DbSet<Comentario> Comentarios { get; set; }
+        public DbSet<Lectura> Lecturas { get; set; }
+        public DbSet<Asistencia> Asistencias { get; set; }
     }
 }
