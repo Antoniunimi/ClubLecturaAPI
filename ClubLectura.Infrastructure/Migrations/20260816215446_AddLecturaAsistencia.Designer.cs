@@ -4,6 +4,7 @@ using ClubLectura.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubLectura.Infrastructure.Migrations
 {
     [DbContext(typeof(ClubLecturaContext))]
-    partial class ClubLecturaContextModelSnapshot : ModelSnapshot
+    [Migration("20260816215446_AddLecturaAsistencia")]
+    partial class AddLecturaAsistencia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
